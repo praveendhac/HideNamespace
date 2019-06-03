@@ -36,11 +36,6 @@ import (
     admissionregistrationv1beta1 "k8s.io/api/admissionregistration/v1beta1"
     "k8s.io/apimachinery/pkg/runtime/serializer"
 )
-replace (
-	k8s.io/api => k8s.io/api kubernetes-1.13.4
-	k8s.io/apimachinery => k8s.io/apimachinery kubernetes-1.13.4
-	k8s.io/client-go => k8s.io/client-go v10.0.0
-)
 
 var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
