@@ -1,0 +1,2 @@
+# HideNamespace
+Hide Kubernetes Namespaceas
