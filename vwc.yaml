@@ -1,0 +1,18 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+ name: hide-namespace
+webhooks:
+ - name: hide-namespace.praveend.com
+    clientConfig:
+     service:
+       name: hide-namespace
+       namespace: hide-namespace
+       path: "/"
+     caBundle: ${CA_BUNDLE}
+    rules:
+     - operations: ["CREATE","UPDATE"]
+       apiGroups: [""]
+       apiVersions: ["v1"]
+       resources: ["namespaces"]
+    failurePolicy: Ignore

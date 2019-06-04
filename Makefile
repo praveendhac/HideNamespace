@@ -17,6 +17,8 @@ pre-requisite:
 	go mod init github.com/HideNamespace
 
 # will create go.sum and binary
+# go build will build binary specific to the OS you are using
+# to force build linux binary use "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build"
 build:
 	go build
 	docker build --no-cache -t praveendhac/hidenamespace:v1alpha1 .
