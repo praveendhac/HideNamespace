@@ -1,12 +1,18 @@
 # HideNamespace
 Hide Kubernetes Namespaceas
 
+## Build
 ```
 # create directory to code (HideNamespace here) anywhere on the disk 
 $ go mod init github.com/HideNamespace
 $ go build 
 or
 $ GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o HideNamespace .
+```
+Above commands if run on MacOS will build MacOS binary, to cross-compile i.e. build linux binary run
+- Cross compile
+```
+$ GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 ```
 
 Test run of the created docker image from make build/make push
