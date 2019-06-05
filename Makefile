@@ -20,7 +20,7 @@ pre-requisite:
 # go build will build binary specific to the OS you are using
 # to force build linux binary use "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build"
 build:
-	go build
+	GO111MODULE=on GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 	docker build --no-cache -t praveendhac/hidenamespace:v1alpha1 .
 
 push:

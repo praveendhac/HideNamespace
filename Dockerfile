@@ -15,3 +15,4 @@
 FROM ubuntu 
 
 ADD HideNamespace /HideNamespace
+ENTRYPOINT ["./HideNamespace"]

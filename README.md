@@ -12,15 +12,22 @@ $ GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o Hide
 Above commands if run on MacOS will build MacOS binary, to cross-compile i.e. build linux binary run
 - Cross compile
 ```
-$ GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
+$ GO111MODULE=on GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
 ```
 
 Test run of the created docker image from make build/make push
 ```
 kubectl run pd-test --image=praveendhac/hidenamespace:v1alpha1 --rm -it --restart=Never -n my-namespace
 ```
+
+caBundle(CA_BUNDLE) is PEM encoded CA cert that signs webhook server cert. Generating CA_BUNDLE used in validating-webhook-configuration.yaml
+```
+cat ./deployment/validating-webhook-configuration.yaml | ./deployment/get_and_patch_wh_ca_bundle.sh > ./deployment/validating-webhook-configuration-ca-bundle.yaml
+```
+
 ## References
 - https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/
+- https://github.com/morvencao/kube-mutating-webhook-tutorial/blob/master/medium-article.md
 - https://container-solutions.com/a-gentle-intro-to-validation-admission-webhooks-in-kubernetes/
 - https://container-solutions.com/some-admission-webhook-basics/
 - https://github.com/kubernetes/kubernetes/tree/v1.10.0-beta.1/test/images/webhook
