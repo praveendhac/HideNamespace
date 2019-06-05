@@ -20,9 +20,9 @@ Test run of the created docker image from make build/make push
 kubectl run pd-test --image=praveendhac/hidenamespace:v1alpha1 --rm -it --restart=Never -n my-namespace
 ```
 
-caBundle(CA_BUNDLE) is PEM encoded CA cert that signs webhook server cert. Generating CA_BUNDLE used in validating-webhook-configuration.yaml
+caBundle(CA_BUNDLE) is PEM encoded CA cert that signs webhook server cert. Generating CA_BUNDLE used in validating-webhook-conf.yaml.tmpl
 ```
-cat ./deployment/validating-webhook-configuration.yaml | ./deployment/get_and_patch_wh_ca_bundle.sh > ./deployment/validating-webhook-configuration-ca-bundle.yaml
+cat ./deployment/validating-webhook-conf.yaml.tmpl | ./deployment/get_and_patch_wh_ca_bundle.sh > ./deployment/validating-webhook-conf-ca-bundle.yaml
 ```
 
 ## References

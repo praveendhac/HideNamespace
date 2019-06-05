@@ -111,6 +111,11 @@ func toAdmissionResponse(err error) *v1beta1.AdmissionResponse {
 // only allow whitelisted namespaces 
 func checkBlockNamespace(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	glog.V(2).Info("checking namespaces")
+    req := ar.Request
+    ns := req.Namespace
+	glog.V(2).Info("Request received: %s", req)
+	glog.V(2).Info("namespace in req: %s", ns)
+
 	podResource := metav1.GroupVersionResource{Group: "", Version: "v1", Resource: "pods"}
 	if ar.Request.Resource != podResource {
 		err := fmt.Errorf("expect resource to be %s", podResource)
