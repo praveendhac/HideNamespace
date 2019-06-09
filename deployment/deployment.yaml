@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: hide-namespace-webhook-deployment
+  namespace: hide-namespace
   labels:
     app: hide-namespace
 spec:
@@ -13,21 +14,8 @@ spec:
     spec:
       containers:
         - name: hide-namespace
-          image: praveendhac/hidenamespace:v1alpha1 
-          imagePullPolicy: IfNotPresent
-          args:
-            - -tlsCertFile=/etc/webhook/certs/cert.pem
-            - -tlsKeyFile=/etc/webhook/certs/key.pem
-          volumeMounts:
-            - name: webhook-certs
-              mountPath: /etc/webhook/certs
-              readOnly: true
-            - name: webhook-config
-              mountPath: /etc/webhook/config
-      volumes:
-        - name: webhook-certs
-          secret:
-            secretName: hide-namespace-webhook-certs
-        - name: webhook-config
-          configMap:
-            name: hide-namespace-webhook-configmap
+          image: praveendhac/hidenamespace:flask-hn-certv1 
+          imagePullPolicy: Always 
+          ports:
+          - containerPort: 443
+

@@ -19,10 +19,22 @@ Test run of the created docker image from make build/make push
 ```
 kubectl run pd-test --image=praveendhac/hidenamespace:v1alpha1 --rm -it --restart=Never -n my-namespace
 ```
-
+## Certifying Authority
 caBundle(CA_BUNDLE) is PEM encoded CA cert that signs webhook server cert. Generating CA_BUNDLE used in validating-webhook-conf.yaml.tmpl
 ```
 cat ./deployment/validating-webhook-conf.yaml.tmpl | ./deployment/get_and_patch_wh_ca_bundle.sh > ./deployment/validating-webhook-conf-ca-bundle.yaml
+```
+Using secret generated using get_and_patch_wh_ca_bundle.sh as `caBundle` didn't work, instead used below Flask server cert.pem base64 encoded as `caBundle`
+```
+openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem
+cat cert.pem |base64
+```
+
+## HTTP vs HTTPS
+I was trying to keep it simple, developing webhook server in HTTP but from below error message it looks we need to run webhook server which can understand HTTPS.
+```
+W0608 23:23:13.539938       1 dispatcher.go:68] Failed calling webhook, failing open hide-namespace.praveend.com: failed calling webhook "hide-namespace.praveend.com": Post https://hide-namespace-webhook-svc.hide-namespace.svc:443/hide-namespace?timeout=30s: no service port "443" found for service "hide-namespace-webhook-svc"
+E0608 23:23:13.539962       1 dispatcher.go:69] failed calling webhook "hide-namespace.praveend.com": Post https://hide-namespace-webhook-svc.hide-namespace.svc:443/hide-namespace?timeout=30s: no service port "443" found for service "hide-namespace-webhook-svc"
 ```
 
 ## References

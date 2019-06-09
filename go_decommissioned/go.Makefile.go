@@ -11,8 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# this will create go.mod
+pre-requisite:
+	go mod init github.com/HideNamespace
+
+# will create go.sum and binary
+# go build will build binary specific to the OS you are using
+# to force build linux binary use "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build"
 build:
-	docker build --no-cache -t praveendhac/hidenamespace:flask-hn-certv1 .
+	GO111MODULE=on GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build
+	docker build --no-cache -t praveendhac/hidenamespace:noentrypoint .
 
 push:
-	docker push praveendhac/hidenamespace:flask-hn-certv1
+	docker push praveendhac/hidenamespace:noentrypoint
+
+clean: 
+	rm -rf HideNamespace 
