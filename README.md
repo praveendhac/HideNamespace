@@ -1,5 +1,5 @@
 # HideNamespace
-Hide Kubernetes Namespaceas
+Hide Kubernetes Namespaces, though we have RBACs to control who can create, delete namespaces and deploy to namespaces but with this Webhook I don't want to show few namespaces to few clusters users based on config, somehow this is not possible because of the limitation explained in `RETIRED` file. 
 
 ## Build
 ```
