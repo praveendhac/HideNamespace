@@ -1,0 +1,63 @@
+To implement this feature our ValidatingWebhook need to process HTTP GET requests but as per below conversation Webhooks doesn't receive HTTP GET requests so retiring the project. 
+
+#---------------------------------------------------------
+praveend [3:27 PM]
+I am developing a validating admission, which need to process all the requests received by APIServer but not working as expected, below is my validatingwebhookconfiguration
+```apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+ name: test-vwh
+ labels:
+   app: test-vwh
+webhooks:
+    - name: test-vwh.praveend.com
+      clientConfig:
+        service:
+            name: test-vwh-svc
+            namespace: vwh
+        caBundle: ${CA_BUNDLE}
+      rules:
+        - operations: ["*"]
+          apiGroups: [""]
+          apiVersions: ["v1"]
+          resources: ["*"]
+      failurePolicy: Ignore```
+(edited)
+
+liggitt [3:30 PM]
+What are you seeing that is unexpected?
+that will only send resources from the core API group ("") in version "v1" to your webhook (edited) 
+and if there any errors calling your webhook will ignore the error and allow the request
+is that what you want?
+
+liggitt [3:38 PM]
+@sttts ^^^ re: blog post for CRD/webhook stuff (edited) 
+
+praveend [3:54 PM]
+Webhook works, I can see requests while creating a resource using `operations: ["CREATE"]` but not seeing requests related to get/list commands like `kubectl get po --all-namespaces` or `kubectl get po pod -name -n ns -o wide` using `operations: ["*"]`
+
+sttts [4:04 PM]
+@praveend admission is not called on get/list. That's by design.
+
+liggitt [4:18 PM]
+admission only intercepts data being put into the API, e.g. writes
+
+praveend [5:06 PM]
+Oh! Thanks for the info @sttts @liggitt If not webhooks, is there a way to read and control `get/list` requests, may be using other mechanisms.
+
+liggitt [5:06 PM]
+authorization is the only way to control them
+that just allows/forbids entirely
+you cannot filter list or control based on label/field selector (edited) 
+
+praveend [5:23 PM]
+authorization? any reference please.
+
+liggitt [5:56 PM]
+https://kubernetes.io/docs/reference/access-authn-authz/webhook/
+kubernetes.io
+Webhook Mode
+
+praveend [7:57 PM]
+Thanks @liggitt, has gone through the above wiki, even Webhook Authorization mode sends HTTP POST, so no way for a webhoot to receive HTTP GET requests?
+#---------------------------------------------------------
